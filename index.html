@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EstiloÚnico | Tienda Simple y Funcional</title>
+    
+    <style>
+        /* Estilos Generales y Modernos */
+        :root {
+            --primary-color: #333;
+            --accent-color: #007bff;
+            --background-color: #f9f9f9;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: var(--background-color); color: var(--primary-color); line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+        /* Header y Navegación */
+        header { background-color: #fff; border-bottom: 1px solid #eee; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .logo { font-size: 1.8rem; font-weight: 700; color: var(--primary-color); }
+        nav a { text-decoration: none; color: var(--primary-color); margin-left: 25px; font-weight: 500; }
+        #cart-icon { cursor: pointer; font-weight: 700; }
+
+        /* Banner de Imagen */
+        .hero-banner { 
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            margin-bottom: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .hero-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Grid de Productos */
+        .product-grid { padding: 40px 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .product-grid h2 { text-align: center; font-size: 2.5rem; margin-bottom: 50px; font-weight: 300; grid-column: 1 / -1; }
+        .product-card { background-color: #fff; padding: 20px; border-radius: 4px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); text-align: center; transition: transform 0.3s; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 6px 12px rgba(0,0,0,0.1); }
+        .product-image { width: 100%; height: 300px; margin-bottom: 15px; border-radius: 4px; } /* Simulación de imagen */
+        .price { font-size: 1.2rem; color: var(--accent-color); font-weight: 700; margin: 10px 0; }
+
+        /* Botón Añadir/Checkout */
+        .add-btn { background-color: var(--primary-color); color: #fff; border: none; padding: 10px 20px; margin-top: 15px; cursor: pointer; font-size: 1rem; text-transform: uppercase; transition: background-color 0.3s; width: 100%; }
+        .add-btn:hover:not([disabled]) { background-color: var(--accent-color); }
+        #checkout-btn:disabled { background-color: #ccc; cursor: not-allowed; }
+
+        /* MODAL DE CARRITO */
+        .modal { display: none; position: fixed; z-index: 10; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); }
+        .modal-content { background-color: #fefefe; margin: 5% auto; padding: 30px; border: 1px solid #888; width: 90%; max-width: 600px; border-radius: 8px; position: relative; }
+        .close-btn { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+        .close-btn:hover, .close-btn:focus { color: #000; text-decoration: none; cursor: pointer; }
+
+        /* Ítems del Carrito */
+        .cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 10px 0; }
+        .cart-item-info { flex-grow: 1; }
+        .cart-item-qty button { background: #eee; border: 1px solid #ddd; padding: 3px 8px; cursor: pointer; margin: 0 5px; }
+        .remove-item-btn { color: red; cursor: pointer; margin-left: 15px; font-size: 1rem; }
+        .cart-summary { border-top: 2px solid var(--primary-color); padding-top: 20px; margin-top: 20px; text-align: right; font-size: 1.4rem; font-weight: 700; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">EstiloÚnico</div>
+        <nav>
+            <a href="#productos">Productos</a>
+            <a href="#nosotros">Nosotros</a>
+            <a href="#" id="cart-icon">🛒 Carrito (<span id="cart-count">0</span>)</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        
+        <section class="hero-banner">
+            <img src="captura.jpg" alt="Nueva Colección de EstiloÚnico - Moda Sostenible" onerror="this.style.display='none'; this.closest('.hero-banner').style.backgroundColor='#ccc'; this.closest('.hero-banner').innerHTML='<p style=\'text-align:center; padding: 180px 0;\'>[Placeholder: Agrega captura.jpg]</p>';">
+        </section>
+        <section id="productos" class="product-grid">
+            <h2>Nuestra Colección</h2>
+            
+            <div class="product-card" data-id="1" data-nombre="Camiseta Orgánica" data-precio="29.99">
+                <div class="product-image" style="background-color: #d1e3d7;"></div> 
+                <h3>Camiseta Orgánica</h3>
+                <p class="description">Algodón 100% orgánico, corte slim.</p>
+                <p class="price">$29.99</p>
+                <button class="add-btn">Añadir al Carrito</button>
+            </div>
+
+            <div class="product-card" data-id="2" data-nombre="Jeans Slim Fit" data-precio="65.50">
+                <div class="product-image" style="background-color: #c7d1e8;"></div> 
+                <h3>Jeans Slim Fit</h3>
+                <p class="description">Denim elástico, color azul oscuro.</p>
+                <p class="price">$65.50</p>
+                <button class="add-btn">Añadir al Carrito</button>
+            </div>
+
+            <div class="product-card" data-id="3" data-nombre="Sudadera Oversize" data-precio="45.00">
+                <div class="product-image" style="background-color: #f0e1d0;"></div> 
+                <h3>Sudadera Oversize</h3>
+                <p class="description">Diseño minimalista y cómodo.</p>
+                <p class="price">$45.00</p>
+                <button class="add-btn">Añadir al Carrito</button>
+            </div>
+        </section>
+
+        <section id="nosotros" class="about-section">
+            <h2>Sobre EstiloÚnico</h2>
+            <p>Somos una marca dedicada a la moda sostenible y el diseño atemporal. Tu ropa, tu estilo, nuestra calidad.</p>
+        </section>
+    </main>
+    
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Tu Carrito de Compras</h2>
+            <div id="cart-items">
+                <p>Tu carrito está vacío.</p>
+            </div>
+            <div class="cart-summary">
+                <p>Total: <span id="cart-total">$0.00</span></p>
+                <button id="checkout-btn" class="add-btn" disabled>Finalizar Compra</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 EstiloÚnico.</p>
+    </footer>
+
+    <script>
+        // LÓGICA DEL CARRITO DE COMPRAS CON JAVASCRIPT Y LOCALSTORAGE
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Elementos del DOM
+            const cartIcon = document.getElementById('cart-icon');
+            const cartModal = document.getElementById('cart-modal');
+            const closeBtn = document.querySelector('.close-btn');
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartTotalSpan = document.getElementById('cart-total');
+            const cartCountSpan = document.getElementById('cart-count');
+            const checkoutBtn = document.getElementById('checkout-btn');
+            const addButtons = document.querySelectorAll('.add-btn');
+
+            // 2. Inicializar el carrito (Carga los datos del localStorage)
+            let cart = JSON.parse(localStorage.getItem('shoppingCart')) || [];
+            updateCartDisplay();
+
+            // 3. Funciones del Carrito
+
+            function saveCart() {
+                localStorage.setItem('shoppingCart', JSON.stringify(cart));
+            }
+
+            function updateCartDisplay() {
+                // Actualiza el contador del carrito en el header
+                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                cartCountSpan.textContent = totalItems;
+                
+                // Renderiza los ítems en la modal
+                renderCartItems();
+            }
+
+            function renderCartItems() {
+                cartItemsContainer.innerHTML = '';
+                let total = 0;
+
+                if (cart.length === 0) {
+                    cartItemsContainer.innerHTML = '<p style="text-align: center; color: #555;">Tu carrito está vacío. ¡Añade algo de ropa!</p>';
+                    checkoutBtn.disabled = true;
+                } else {
+                    checkoutBtn.disabled = false;
+                    cart.forEach(item => {
+                        const itemTotal = item.price * item.quantity;
+                        total += itemTotal;
+                        
+                        const itemElement = document.createElement('div');
+                        itemElement.classList.add('cart-item');
+                        itemElement.innerHTML = `
+                            <div class="cart-item-info">
+                                <strong>${item.name}</strong> ($${item.price.toFixed(2)})
+                            </div>
+                            <div class="cart-item-qty">
+                                <button class="qty-minus" data-id="${item.id}">-</button>
+                                <span>${item.quantity}</span>
+                                <button class="qty-plus" data-id="${item.id}">+</button>
+                            </div>
+                            <div>$${itemTotal.toFixed(2)}</div>
+                            <span class="remove-item-btn" data-id="${item.id}">✖</span>
+                        `;
+                        cartItemsContainer.appendChild(itemElement);
+                    });
+                }
+                
+                // Actualiza el total
+                cartTotalSpan.textContent = `$${total.toFixed(2)}`;
+                saveCart();
+            }
+
+            function addItemToCart(id, name, price) {
+                const existingItem = cart.find(item => item.id === id);
+
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({ id, name, price, quantity: 1 });
+                }
+                
+                updateCartDisplay();
+            }
+
+            // 4. Manejadores de Eventos
+            
+            // Abrir Modal
+            cartIcon.addEventListener('click', () => {
+                renderCartItems(); 
+                cartModal.style.display = 'block';
+            });
+
+            // Cerrar Modal con botón o clic fuera
+            closeBtn.addEventListener('click', () => {
+                cartModal.style.display = 'none';
+            });
+
+            window.addEventListener('click', (event) => {
+                if (event.target === cartModal) {
+                    cartModal.style.display = 'none';
+                }
+            });
+
+            // Añadir al Carrito desde la cuadrícula de productos
+            addButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const card = e.target.closest('.product-card');
+                    const id = card.dataset.id;
+                    const name = card.dataset.nombre;
+                    const price = parseFloat(card.dataset.precio);
+                    
+                    addItemToCart(id, name, price);
+                    
+                    alert(`"${name}" añadido al carrito.`);
+                });
+            });
+
+            // Cambios dentro de la Modal (Cantidad y Eliminar)
+            cartItemsContainer.addEventListener('click', (e) => {
+                const target = e.target;
+                const id = target.dataset.id;
+
+                if (target.classList.contains('qty-plus')) {
+                    const item = cart.find(i => i.id === id);
+                    item.quantity++;
+                } else if (target.classList.contains('qty-minus')) {
+                    const item = cart.find(i => i.id === id);
+                    if (item.quantity > 1) {
+                        item.quantity--;
+                    }
+                } else if (target.classList.contains('remove-item-btn')) {
+                    cart = cart.filter(item => item.id !== id);
+                }
+
+                updateCartDisplay();
+            });
+            
+            // Finalizar Compra (Checkout)
+            checkoutBtn.addEventListener('click', () => {
+                alert(`¡Gracias por tu compra!\nEl total simulado es: ${cartTotalSpan.textContent}\nEste es el punto donde se redirigiría a una pasarela de pago.`);
+                
+                // Vaciado del carrito después de la compra
+                cart = [];
+                localStorage.removeItem('shoppingCart');
+                updateCartDisplay();
+                cartModal.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
